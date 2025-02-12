@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>AverageColor</title>
+        <style>
+            body {
+                width: 100%;
+                height: 100%;
+                min-height: 100vh;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #76b852;
+            }
+            .container {
+                width: 60vh;
+                min-height: 20vh;
+                margin: 0;
+                padding: 1rem;
+                text-align: center;
+                background-color: #fff;
+                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            }
+
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 2px;
+                line-height: 24px;
+                font-weight: 500;
+            }
+
+            .form-group {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .input-box {
+                width: 100%;
+                margin: 1rem;
+            }
+
+            input {
+                width: 100%;
+                height: 2rem;
+                border: none;
+                background-color: transparent;
+                cursor: pointer;
+            }
+
+            label {
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+                color: #808080;
+                font-weight: 500;
+            }
+
+            button {
+                width: 100%;
+                height: 4rem;
+                background-color: #76b852;
+                color: #fff;
+                border: none;
+                font-size: 1rem;
+                letter-spacing: 1px;
+                cursor: pointer;
+                opacity: 0.8;
+                margin-top: 0.5rem;
+                transition: 0.4s ease-out;
+            }
+            button:hover {
+                transform: translateY(-10px);
+                transition: 0.4s ease-out;
+                opacity: 1;
+            }
+
+            #avg {
+                font-size: 1rem;
+                letter-spacing: 1px;
+                color: #656565;
+                font-weight: 500;
+            }
+
+            strong {
+                text-transform: uppercase;
+            }
+        </style>
+    </head>
+
+    <body>
+
+
+        <div class="container">
+
+            <div class="title-box">
+                <h1>AVERAGE COLOR</h1>
+            </div>
+
+            <div class="form-box">
+                <form id="avgColorForm" onsubmit="avgColorFormSubmit(event)">
+
+                    <div class="form-group">
+                        <div class="input-box">
+                            <label for="colorOne">Select the first color</label><br/>
+                            <input type="color" class="color-input" id="colorOne" name="colorOne" value="#3D8085"/>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="colorTwo">Select the second color</label><br/>
+                            <input type="color" class="color-input" id="colorTwo" name="colorTwo" value="#008547"/>
+                        </div>
+                    </div>
+
+                    <div id="avg"></div>
+
+                    <button type="submit">CALCULATE AVERAGE</button>
+                </form>
+            </div>
+
+        </div>
+
+
+    <script>
+        function avgColorFormSubmit(formEvent) {
+            formEvent.preventDefault();
+            setAvgInHtml(null);
+            const colorOne = document.getElementById("colorOne").value.slice(1);
+            const colorTwo = document.getElementById("colorTwo").value.slice(1);
+            averageColor(colorOne, colorTwo);
+        }
+
+        function averageColor(colorOne, colorTwo) {
+            const formatedColorOne = formatAndConvertColorString(colorOne);
+            const formatedColorTwo = formatAndConvertColorString(colorTwo);
+            const avg = calcAndReturnAvgColor(formatedColorOne, formatedColorTwo);
+            setAvgInHtml(avg)
+        }
+
+        function formatAndConvertColorString(color) {
+            const r = parseInt(color.substring(0, 2), 16);
+            const g = parseInt(color.substring(2, 4), 16);
+            const b = parseInt(color.substring(4, 6), 16);
+            return {red: r, green: g, blue: b}
+        }
+
+        function calcAndReturnAvgColor(convertedColorOne, convertedColorTwo) {
+            const rAvg = Math.round((convertedColorOne.red + convertedColorTwo.red) / 2).toString(16).padStart(2, '0');
+            const gAvg = Math.round((convertedColorOne.green + convertedColorTwo.green) / 2).toString(16).padStart(2, '0');
+            const bAvg = Math.round((convertedColorOne.blue + convertedColorTwo.blue) / 2).toString(16).padStart(2, '0');
+            return rAvg + gAvg + bAvg;
+        }
+
+        function setAvgInHtml(avg) {
+            const elem = document.getElementById('avg');
+            elem.innerHTML = avg ? `<p>The average color is: <strong>${avg}</strong></p>` : '';
+        }
+    </script>
+    </body>
+
+</html>
